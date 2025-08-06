@@ -34,7 +34,7 @@ export async function signup(req, res) {
             profilePic: randomAvatar
         });
 
-        // TODO: CREATE THE USER IN STREAM AS WELL
+        //! CREATE THE USER IN STREAM AS WELL
 
         try {
             await upsertStreamUser({
@@ -118,3 +118,61 @@ export async function logout(req, res) {
         success: true
     })
 }
+
+export async function onboard(req, res) {
+    try {
+        const userId = req.user._id;
+
+        const {fullName, bio, nativeLanguage, learningLanguage, location } = req.body;
+
+        if(!fullName || !bio || !nativeLanguage || !learningLanguage || !location) {
+            return res.status(400).json({
+                message: "All fields are required",
+                missingFields: [
+                    !fullName && "fullName",
+                    !bio && "bio",
+                    !nativeLanguage && "nativeLanguage",
+                    !learningLanguage && "learningLanguage",
+                    !location && "location"
+                ].filter(Boolean),
+            });
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            ...req.body,
+            isOnboarded: true
+        }, { new: true });
+
+        if(!updatedUser) {
+            res.status(404).json({
+                message: "User not found",
+                success: false
+            });
+        }
+
+        // TODO: UPDATE THE USER INFO IN STREAM
+
+        try {
+            await upsertStreamUser({
+                id: updatedUser._id.toString(),
+                name: updatedUser.fullName,
+                image: updatedUser.profilePic || "",
+            });
+            console.log(`Stream user updated on onboarding for ${updatedUser.fullName}`);
+        } catch (streamError) {
+            console.log("Error updating Stream user on onboarding:", streamError.message);
+        }
+
+        return res.status(200).json({
+            message: "User onboarded successfully",
+            user: updatedUser,
+            success: true
+        })
+    } catch (error) {
+        console.log("Error in onboard:", error);
+        return res.status(500).json({
+            message: "Failed to onboard user",
+            success: false
+        });
+    }
+};
