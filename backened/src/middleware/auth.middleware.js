@@ -12,13 +12,13 @@ export const protectRoute = async (req, res, next) => {
         const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
         if(!decode) {
-            res.status(401).json({ message: "Unauthorized access - Invalid token" });
+            return res.status(401).json({ message: "Unauthorized access - Invalid token" });
         }
 
-        const user = await User.findById(decode.userId);
+        const user = await User.findById(decode.userId).select("-password");
 
         if(!user) {
-            res.status(404).json({ message: "Unauthorized - User not found" });
+            return res.status(404).json({ message: "Unauthorized - User not found" });
         }
 
         req.user = user; // Attach user to request object
@@ -26,6 +26,6 @@ export const protectRoute = async (req, res, next) => {
 
     } catch (error) {
         console.error("Error in protectRoute middleware:", error);
-        res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Internal server error" });
     }
 }
