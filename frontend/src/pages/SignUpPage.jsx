@@ -36,7 +36,7 @@ const SignUpPage = () => {
 
         <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col relative">
           {/* Decorative gradient overlay */}
-          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-r from-emerald-600/5 to-teal-600/5 rounded-t-2xl"></div>
+          <div className="absolute top-0 left-0 w-full h-28 bg-gradient-to-r from-emerald-600/5 to-teal-600/5 rounded-t-2xl"></div>
 
           {/* LOGO */}
           <div className="mb-4 flex items-center justify-start gap-2 relative z-10">
@@ -73,11 +73,11 @@ const SignUpPage = () => {
             </div>
           )}
 
-          <div className="w-full relative z-10">
+          <div className="w-full relative z-10 mt-4">
             <form onSubmit={handleSignup}>
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-2xl font-semibold text-emerald-100 hover:text-emerald-50 transition-colors duration-300 mb-2">
+                  <h2 className="text-2xl font-semibold text-emerald-400 hover:text-emerald-200 transition-colors duration-300 mb-2">
                     Create Account
                   </h2>
                   <p className="text-sm text-slate-300 hover:text-slate-200 transition-colors duration-300">
