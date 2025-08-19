@@ -18,8 +18,8 @@ import toast from "react-hot-toast";
 
 // CHatloader
 
-import ChatLoader from "../components/ChatLoader";
-import CallButton from "../components/CallButton";
+import ChatLoader from "../components/chatLoader.jsx";
+import CallButton from "../components/CallButton.jsx";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
