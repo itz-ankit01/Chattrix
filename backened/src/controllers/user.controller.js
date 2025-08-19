@@ -70,8 +70,10 @@ export async function sendFriendRequest(req, res) {
         
         const friendRequest = await FriendRequest.create({
             sender: myId,
-            receiver: recipientId
+            recipient: recipientId
         });
+
+        console.log("Friend Request Created:", friendRequest);
 
         res.status(201).json(friendRequest);
     } catch (error) {
